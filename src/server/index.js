@@ -17,12 +17,12 @@ app.use("/", express.static(path.join(__dirname, "../public")));
 // example API call
 app.get("/roverInfo/:rover_name", async (req, res) => {
   const url = "https://api.nasa.gov/mars-photos/api/v1/";
+
   try {
     const dataResponse = await fetch(
       `${url}manifests/${req.params.rover_name}?api_key=${process.env.API_KEY}`
     ).then(res => res.json());
-    // res.send({dataResponse})
-    let max_date = dataResponse.photo_manifest.max_date;
+
     let rover_name = dataResponse.photo_manifest.name;
     let roverPhotos = await fetch(
       `https://api.nasa.gov/mars-photos/api/v1/rovers/${rover_name}/photos?earth_date=${max_date}&page=1&api_key=${process.env.API_KEY}`
