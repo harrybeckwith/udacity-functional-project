@@ -41,11 +41,13 @@ const App = state => {
       </div>
   `;
 };
+// Create photo markup for gallery
 const formattPhotos = arr => {
   return arr
     .map(item => `<img src ="${item}" class="rover__gallery__img">`)
     .join(" ");
 };
+// check if any data
 const checkAvailable = arr => {
   if (arr.length > 0) {
     return "display:block;";
@@ -59,26 +61,28 @@ const displayRoverNames = arr => {
   return arr
     .map(
       item =>
-        `<div class="rover-btn" id="${item.toLowerCase()}" onClick="ClickRoverButton(this)">${item}</div>`
+        `<div class="rover-btn" id="${item.toLowerCase()}" onClick="clickRoverButton(this)">${item}</div>`
     )
     .join(" ");
 };
-
+// search via name, store all photos in arr
 const findRoverData = (arr, searchName) => {
   return arr.map(item => item[searchName]);
 };
-
+// pass in rover name on click
 const getRoverInfo = async roverName => {
+  // make api call
   try {
     await fetch(`http://localhost:3000/roverInfo/${roverName}`)
       .then(res => res.json())
       .then(roverInfo => {
+        // store data
         const photos = findRoverData(roverInfo.roverData.photos, "img_src");
         const name = roverInfo.roverData.photos[0].rover.name;
         const launchDate = roverInfo.roverData.photos[0].rover.launch_date;
         const landingDate = roverInfo.roverData.photos[0].rover.landing_date;
         const status = roverInfo.roverData.photos[0].rover.status;
-
+        // place into store object
         const newState = {
           photos,
           name,
@@ -86,15 +90,17 @@ const getRoverInfo = async roverName => {
           landingDate,
           status
         };
-
+        // use found data to update store
         updateStore(store, newState);
       });
   } catch (error) {
     console.log("error:", error);
   }
 };
-
-const ClickRoverButton = async e => {
+// click on rover button
+const clickRoverButton = async e => {
+  // send id to api call
   await getRoverInfo(e.id);
 };
+// render to begin for buttons
 render(root, store);
