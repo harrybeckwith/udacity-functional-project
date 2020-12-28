@@ -28,7 +28,7 @@ app.get("/roverInfo/:rover_name", async (req, res) => {
     const maxDate = dataResponse.photo_manifest.max_date;
     // get photos for rover and max date
     const roverData = await fetch(
-      `${url}/rovers/${roverName}/photos?earth_date=${maxDate}&api_key=${process.env.API_KEY}`
+      `${url}/rovers/${roverName}/photos?earth_date=${maxDate}&page=1&api_key=${process.env.API_KEY}`
     ).then(res => res.json());
     res.send({ roverData });
   } catch (err) {

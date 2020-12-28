@@ -1,4 +1,9 @@
 let store = {
+  photos: [],
+  name: "",
+  launchDate: "",
+  landingDate: "",
+  status: "",
   rovers: ["Curiosity", "Opportunity", "Spirit"]
 };
 
@@ -18,32 +23,44 @@ const render = async (root, state) => {
 
 // create content
 const App = state => {
-  let { rovers, apod } = state;
+  let { rovers, photos, name, launchDate, landingDate, status } = state;
 
   return `
-      <header></header>
-      <main>
-          ${Greeting(store.user.name)}
-          <section>
-              <h3>Put things on the page!</h3>
-              <p>Here is an example section.</p>
-              <p>
-                  One of the most popular websites at NASA is the Astronomy Picture of the Day. In fact, this website is one of
-                  the most popular websites across all federal agencies. It has the popular appeal of a Justin Bieber video.
-                  This endpoint structures the APOD imagery and associated metadata so that it can be repurposed for other
-                  applications. In addition, if the concept_tags parameter is set to True, then keywords derived from the image
-                  explanation are returned. These keywords could be used as auto-generated hashtags for twitter or instagram feeds;
-                  but generally help with discoverability of relevant imagery.
-              </p>
-              ${ImageOfTheDay(apod)}
+      <div>
+      <section>
+        ${displayRoverNames(rovers)}
+      </section>
+          <section style="${checkAvailable(photos)}">
+              <p>Name: ${name}</p>
+              <p>Launch date: ${launchDate}</p>
+              <p>Landing date: ${landingDate}</p>
+              <p>Status: ${status}</p>
           </section>
-      </main>
-      <footer></footer>
+      </div>
+    
   `;
 };
 
-const formattRoverGallery = arr => {
-  return arr.map(item => item.img_src);
+const checkAvailable = arr => {
+  if (arr.length > 0) {
+    return "display:block;";
+  } else {
+    return "display:none;";
+  }
+};
+
+// rover names as buttons
+const displayRoverNames = arr => {
+  return arr
+    .map(
+      item =>
+        `<div class="rover-btn" id="${item.toLowerCase()}" onClick="ClickRoverButton(this)">${item}</div>`
+    )
+    .join(" ");
+};
+
+const findRoverData = (arr, searchName) => {
+  return arr.map(item => item[searchName]);
 };
 
 const getRoverInfo = async roverName => {
@@ -51,8 +68,21 @@ const getRoverInfo = async roverName => {
     await fetch(`http://localhost:3000/roverInfo/${roverName}`)
       .then(res => res.json())
       .then(roverInfo => {
-        const photos = formattRoverGallery(roverInfo.roverData.photos);
-        console.log(photos);
+        const photos = findRoverData(roverInfo.roverData.photos, "img_src");
+        const name = roverInfo.roverData.photos[0].rover.name;
+        const launchDate = roverInfo.roverData.photos[0].rover.launch_date;
+        const landingDate = roverInfo.roverData.photos[0].rover.landing_date;
+        const status = roverInfo.roverData.photos[0].rover.status;
+
+        const newState = {
+          photos,
+          name,
+          launchDate,
+          landingDate,
+          status
+        };
+
+        updateStore(store, newState);
       });
   } catch (error) {
     console.log("error:", error);
@@ -60,10 +90,6 @@ const getRoverInfo = async roverName => {
 };
 
 const ClickRoverButton = async e => {
-  await getRoverInfo(e.target.value);
+  await getRoverInfo(e.id);
 };
-
-const aa = document.querySelector(".aa");
-aa.addEventListener("click", e => {
-  ClickRoverButton(e);
-});
+render(root, store);
