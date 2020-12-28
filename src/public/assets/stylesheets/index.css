@@ -20,6 +20,14 @@ footer {
   /* footer styles */
 }
 
+.rover__gallery {
+  display: flex;
+  width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: space-between;
+}
+
 /* -------------------  TABLET  --------------------- */
 @media (min-width: 768px) {
   /* use mobile */

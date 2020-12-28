@@ -7,8 +7,6 @@ let store = {
   rovers: ["Curiosity", "Opportunity", "Spirit"]
 };
 
-// ------------------------------------------------------  API CALLS
-
 // add our markup to the page
 const root = document.getElementById("root");
 
@@ -30,17 +28,24 @@ const App = state => {
       <section>
         ${displayRoverNames(rovers)}
       </section>
-          <section style="${checkAvailable(photos)}">
+          <section style="${checkAvailable(photos)}" class="rover">
               <p>Name: ${name}</p>
               <p>Launch date: ${launchDate}</p>
               <p>Landing date: ${landingDate}</p>
               <p>Status: ${status}</p>
+              <div class="rover__gallery">
+              
+              ${formattPhotos(photos)}
+              </div>
           </section>
       </div>
-    
   `;
 };
-
+const formattPhotos = arr => {
+  return arr
+    .map(item => `<img src ="${item}" class="rover__gallery__img">`)
+    .join(" ");
+};
 const checkAvailable = arr => {
   if (arr.length > 0) {
     return "display:block;";
