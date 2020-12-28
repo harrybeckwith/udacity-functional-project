@@ -1,3 +1,12 @@
+let store = {
+  user: { name: "Student" },
+  apod: "",
+  rovers: ["Curiosity", "Opportunity", "Spirit"]
+};
+
+// ------------------------------------------------------  API CALLS
+
+// Example API call
 // ------------------------------------------------------  API CALLS
 
 const getRoverInfo = async roverName => {

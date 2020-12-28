@@ -19,15 +19,18 @@ app.get("/roverInfo/:rover_name", async (req, res) => {
   const url = "https://api.nasa.gov/mars-photos/api/v1/";
 
   try {
+    // get data for rover name
     const dataResponse = await fetch(
       `${url}manifests/${req.params.rover_name}?api_key=${process.env.API_KEY}`
     ).then(res => res.json());
-
-    let rover_name = dataResponse.photo_manifest.name;
-    let roverPhotos = await fetch(
-      `https://api.nasa.gov/mars-photos/api/v1/rovers/${rover_name}/photos?earth_date=${max_date}&page=1&api_key=${process.env.API_KEY}`
+    // store rover name and max date
+    const roverName = dataResponse.photo_manifest.name;
+    const maxDate = dataResponse.photo_manifest.max_date;
+    // get photos for rover and max date
+    const roverData = await fetch(
+      `${url}/rovers/${roverName}/photos?earth_date=${maxDate}&api_key=${process.env.API_KEY}`
     ).then(res => res.json());
-    res.send(roverPhotos);
+    res.send({ roverData });
   } catch (err) {
     console.log("error:", err);
   }
