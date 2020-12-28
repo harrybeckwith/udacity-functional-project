@@ -4,17 +4,17 @@ let store = {
   launchDate: "",
   landingDate: "",
   status: "",
-  rovers: ["Curiosity", "Opportunity", "Spirit"]
+  rovers: Immutable.List(["Curiosity", "Opportunity", "Spirit"])
 };
 
 // add our markup to the page
 const root = document.getElementById("root");
-
+// update store current and new
 const updateStore = (store, newState) => {
   store = Object.assign(store, newState);
   render(root, store);
 };
-
+// display to html
 const render = async (root, state) => {
   root.innerHTML = App(state);
 };
