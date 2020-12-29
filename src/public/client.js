@@ -7,18 +7,18 @@ let store = Immutable.Map({
   rovers: Immutable.List(["Curiosity", "Opportunity", "Spirit"]),
   showRoverInfo: false
 });
-// add our markup to the page
+// Add our markup to the page
 const root = document.getElementById("root");
-// update store current and new
+// Update store current and new
 const updateStore = (store, newState) => {
   store = store.merge(store, newState);
   render(root, store);
 };
-// display to html
+// Display to html
 const render = async (root, state) => {
   root.innerHTML = App(state);
 };
-// create content
+// Create content
 const App = state => {
   return `
   <header>
@@ -49,7 +49,7 @@ const App = state => {
           
   `;
 };
-// checks
+// Check if first button clicked
 const displayToggle = boolean => {
   if (boolean) return "display:flex";
   return "display:none";
@@ -60,7 +60,7 @@ const formattPhotos = arr => {
     .map(item => `<img src ="${item}" class="rover__gallery__img">`)
     .join(" ");
 };
-// rover names as buttons
+// Rover names as buttons
 const displayRoverNames = arr => {
   return arr
     .map(
@@ -69,13 +69,13 @@ const displayRoverNames = arr => {
     )
     .join(" ");
 };
-// search via name, store all photos in arr
+// Search via name, store all photos in arr
 const findRoverData = (arr, searchName) => {
   return arr.map(item => item[searchName]);
 };
-// pass in rover name on click
+// Pass in rover name on click
 const getRoverInfo = async roverName => {
-  // make api call
+  // Make api call
   try {
     await fetch(`http://localhost:3000/roverInfo/${roverName}`)
       .then(res => res.json())
@@ -86,7 +86,7 @@ const getRoverInfo = async roverName => {
         const launchDate = roverInfo.roverData.photos[0].rover.launch_date;
         const landingDate = roverInfo.roverData.photos[0].rover.landing_date;
         const status = roverInfo.roverData.photos[0].rover.status;
-        // place into store object
+        // Place into store object
         const newState = {
           photos,
           name,
@@ -95,19 +95,18 @@ const getRoverInfo = async roverName => {
           status,
           showRoverInfo: true
         };
-        // use found data to update store
+        // Use found data to update store
         updateStore(store, newState);
       });
   } catch (error) {
     console.log("error:", error);
   }
 };
-// click on rover button
+// Click on rover button
 const clickRoverButton = async e => {
-  console.log(e.id);
-  // send id to api call
+  // Send id to api call
   await getRoverInfo(e.id);
 };
 
-// render to begin for buttons
+// Render to begin for buttons
 render(root, store);
