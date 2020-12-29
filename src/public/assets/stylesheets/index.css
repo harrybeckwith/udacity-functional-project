@@ -9,6 +9,8 @@ body {
   margin-right: auto;
   justify-content: center;
   flex-wrap: wrap;
+  height: 500px;
+  overflow-y: scroll;
 }
 
 .rover__gallery__img {

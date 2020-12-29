@@ -28,14 +28,18 @@ const App = state => {
       <div style="${displayToggle(
         state.get("showRoverInfo")
       )}" class="rover__details">
-        <p class="rover__details__item"><span class="rover__details__item--white">Name: </span><span class="rover__details__item--gold">${state.get("name")}</span></p>
+        <p class="rover__details__item"><span class="rover__details__item--white">Name: </span><span class="rover__details__item--gold">${state.get(
+          "name"
+        )}</span></p>
         <p class="rover__details__item"><span class="rover__details__item--white">Launch date:</span> <span class="rover__details__item--gold"> ${state.get(
           "launchDate"
         )}</span></p>
         <p class="rover__details__item"><span class="rover__details__item--white">Landing date:</span> <span class="rover__details__item--gold"> ${state.get(
           "landingDate"
         )}</span></p>
-        <p class="rover__details__item"><span class="rover__details__item--white">Status:</span><span class="rover__details__item--gold">  ${state.get("status")}</span></p>
+        <p class="rover__details__item"><span class="rover__details__item--white">Status:</span><span class="rover__details__item--gold">  ${state.get(
+          "status"
+        )}</span></p>
       </div>
       </header>
          
