@@ -18,36 +18,46 @@ const updateStore = (store, newState) => {
 const render = async (root, state) => {
   root.innerHTML = App(state);
 };
+
 // Create content
 const App = state => {
   return `
   <header>
-      <div class="rover-btns">
-        ${displayRoverNames(state.get("rovers"))}
-      </div>
-      <div style="${displayToggle(
-        state.get("showRoverInfo")
-      )}" class="rover__details">
-        <p class="rover__details__item"><span class="rover__details__item--white">Name: </span><span class="rover__details__item--gold">${state.get(
-          "name"
-        )}</span></p>
-        <p class="rover__details__item"><span class="rover__details__item--white">Launch date:</span> <span class="rover__details__item--gold"> ${state.get(
-          "launchDate"
-        )}</span></p>
-        <p class="rover__details__item"><span class="rover__details__item--white">Landing date:</span> <span class="rover__details__item--gold"> ${state.get(
-          "landingDate"
-        )}</span></p>
-        <p class="rover__details__item"><span class="rover__details__item--white">Status:</span><span class="rover__details__item--gold">  ${state.get(
-          "status"
-        )}</span></p>
-      </div>
-      </header>
-         
-              <div class="rover__gallery">
-              ${formattPhotos(state.get("photos"))}
-              </div>
-          
-  `;
+    <div class="rover-btns">
+      ${displayRoverNames(state.get("rovers"))}
+    </div>
+    <div class="rover__details" style="${displayToggle(
+      state.get("showRoverInfo")
+    )}">
+      <p class="rover__details__item">
+        <span class="rover__details__item--white">Name: </span>
+        <span class="rover__details__item--gold">
+          ${state.get("name")}
+        </span>
+      </p>
+      <p class="rover__details__item">
+        <span class="rover__details__item--white">Launch date:</span>
+        <span class="rover__details__item--gold">
+          ${state.get("launchDate")}</span
+        >
+      </p>
+      <p class="rover__details__item">
+        <span class="rover__details__item--white">Landing date:</span>
+        <span class="rover__details__item--gold">
+          ${state.get("landingDate")}</span
+        >
+      </p>
+      <p class="rover__details__item">
+        <span class="rover__details__item--white">Status:</span
+        ><span class="rover__details__item--gold">
+          ${state.get("status")}</span
+        >
+      </p>
+    </div>
+</header>
+<div class="rover__gallery">
+  ${formattPhotos(state.get("photos"))}
+</div>`;
 };
 // Check if first button clicked
 const displayToggle = boolean => {
