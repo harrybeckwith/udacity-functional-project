@@ -12,21 +12,19 @@ app.use(bodyParser.json());
 
 app.use("/", express.static(path.join(__dirname, "../public")));
 
-// your API calls
-
-// example API call
+// API calls for nasa rover data
 app.get("/roverInfo/:rover_name", async (req, res) => {
   const url = "https://api.nasa.gov/mars-photos/api/v1/";
 
   try {
-    // get data for rover name
+    // Get data for rover name
     const dataResponse = await fetch(
       `${url}manifests/${req.params.rover_name}?api_key=${process.env.API_KEY}`
     ).then(res => res.json());
-    // store rover name and max date
+    // Store rover name and max date
     const roverName = dataResponse.photo_manifest.name;
     const maxDate = dataResponse.photo_manifest.max_date;
-    // get photos for rover and max date
+    // Get photos for rover and max date
     const roverData = await fetch(
       `${url}/rovers/${roverName}/photos?earth_date=${maxDate}&page=1&api_key=${process.env.API_KEY}`
     ).then(res => res.json());
