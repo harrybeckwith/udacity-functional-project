@@ -1,45 +1,54 @@
-let store = {
+let store = Immutable.Map({
   photos: [],
   name: "",
   launchDate: "",
   landingDate: "",
   status: "",
-  rovers: Immutable.List(["Curiosity", "Opportunity", "Spirit"])
-};
-
+  rovers: Immutable.List(["Curiosity", "Opportunity", "Spirit"]),
+  showRoverInfo: false
+});
 // add our markup to the page
 const root = document.getElementById("root");
 // update store current and new
 const updateStore = (store, newState) => {
-  store = Object.assign(store, newState);
+  store = store.merge(store, newState);
   render(root, store);
 };
 // display to html
 const render = async (root, state) => {
   root.innerHTML = App(state);
 };
-
 // create content
 const App = state => {
-  let { rovers, photos, name, launchDate, landingDate, status } = state;
-
   return `
-      <div>
-      <section>
-        ${displayRoverNames(rovers)}
-      </section>
-          <section style="${checkAvailable(photos)}" class="rover">
-              <p>Name: ${name}</p>
-              <p>Launch date: ${launchDate}</p>
-              <p>Landing date: ${landingDate}</p>
-              <p>Status: ${status}</p>
-              <div class="rover__gallery">
-              
-              ${formattPhotos(photos)}
-              </div>
-          </section>
+  <header>
+      <div class="rover-btns">
+        ${displayRoverNames(state.get("rovers"))}
       </div>
+      <div style="${displayToggle(
+        state.get("showRoverInfo")
+      )}" class="rover__details">
+        <p class="rover__details__item"><span class="rover__details__item--white">Name: </span><span class="rover__details__item--gold">${state.get("name")}</span></p>
+        <p class="rover__details__item"><span class="rover__details__item--white">Launch date:</span> <span class="rover__details__item--gold"> ${state.get(
+          "launchDate"
+        )}</span></p>
+        <p class="rover__details__item"><span class="rover__details__item--white">Landing date:</span> <span class="rover__details__item--gold"> ${state.get(
+          "landingDate"
+        )}</span></p>
+        <p class="rover__details__item"><span class="rover__details__item--white">Status:</span><span class="rover__details__item--gold">  ${state.get("status")}</span></p>
+      </div>
+      </header>
+         
+              <div class="rover__gallery">
+              ${formattPhotos(state.get("photos"))}
+              </div>
+          
   `;
+};
+// checks
+const displayToggle = boolean => {
+  if (boolean) return "display:flex";
+  return "display:none";
 };
 // Create photo markup for gallery
 const formattPhotos = arr => {
@@ -47,21 +56,12 @@ const formattPhotos = arr => {
     .map(item => `<img src ="${item}" class="rover__gallery__img">`)
     .join(" ");
 };
-// check if any data
-const checkAvailable = arr => {
-  if (arr.length > 0) {
-    return "display:block;";
-  } else {
-    return "display:none;";
-  }
-};
-
 // rover names as buttons
 const displayRoverNames = arr => {
   return arr
     .map(
       item =>
-        `<div class="rover-btn" id="${item.toLowerCase()}" onClick="clickRoverButton(this)">${item}</div>`
+        `<div class="rover-btns__btn" id="${item.toLowerCase()}" onClick="clickRoverButton(this)">${item}</div>`
     )
     .join(" ");
 };
@@ -88,7 +88,8 @@ const getRoverInfo = async roverName => {
           name,
           launchDate,
           landingDate,
-          status
+          status,
+          showRoverInfo: true
         };
         // use found data to update store
         updateStore(store, newState);
@@ -99,8 +100,10 @@ const getRoverInfo = async roverName => {
 };
 // click on rover button
 const clickRoverButton = async e => {
+  console.log(e.id);
   // send id to api call
   await getRoverInfo(e.id);
 };
+
 // render to begin for buttons
 render(root, store);

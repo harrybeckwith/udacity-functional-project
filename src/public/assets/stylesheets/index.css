@@ -1,23 +1,5 @@
-/* -------------------  MOBILE  --------------------- */
-
 body {
-  display: flex;
-  flex-direction: column;
   font-family: Arial;
-  min-height: 100vh;
-}
-
-header {
-  /* header styles */
-}
-
-main {
-  flex: 1;
-  padding: 20px;
-}
-
-footer {
-  /* footer styles */
 }
 
 .rover__gallery {
@@ -34,6 +16,53 @@ footer {
   margin-bottom: 2%;
   margin-right: 1%;
   margin-left: 1%;
+}
+
+header {
+  background-image: url("../img/starfield-banner.jpg");
+  color: gold;
+  padding-bottom: 30px;
+  padding-top: 30px;
+  margin-bottom: 50px;
+}
+
+.rover-btns {
+  display: flex;
+  justify-content: center;
+}
+
+.rover-btns__btn {
+  margin-left: 10px;
+  margin-right: 10px;
+  background-color: gold;
+  color: #020202;
+  padding: 8px 15px;
+  min-width: 130px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.3s linear;
+}
+
+.rover-btns__btn:hover {
+  background-color: #020202;
+  color: gold;
+}
+
+.rover__details {
+  justify-content: center;
+  margin-top: 30px;
+}
+.rover__details__item {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.rover__details__item--gold {
+  color: gold;
+}
+.rover__details__item--white {
+  color: white;
 }
 
 /* -------------------  TABLET  --------------------- */
